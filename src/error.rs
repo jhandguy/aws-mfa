@@ -26,7 +26,7 @@ impl Debug for AwsAuthError {
 impl From<IOError> for AwsAuthError {
     fn from(e: IOError) -> Self {
         Self {
-            message: format!("Failed to perform I/O operation: {}", e.to_string())
+            message: format!("Failed to perform I/O operation: {}", e),
         }
     }
 }
@@ -34,7 +34,7 @@ impl From<IOError> for AwsAuthError {
 impl From<SdkError<GetCallerIdentityError>> for AwsAuthError {
     fn from(e: SdkError<GetCallerIdentityError>) -> Self {
         Self {
-            message: format!("Failed to get caller identity: {}", e.to_string())
+            message: format!("Failed to get caller identity: {}", e),
         }
     }
 }
@@ -42,7 +42,7 @@ impl From<SdkError<GetCallerIdentityError>> for AwsAuthError {
 impl From<SdkError<GetSessionTokenError>> for AwsAuthError {
     fn from(e: SdkError<GetSessionTokenError>) -> Self {
         Self {
-            message: format!("Failed to get session token: {}", e.to_string())
+            message: format!("Failed to get session token: {}", e),
         }
     }
 }

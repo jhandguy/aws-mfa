@@ -1,7 +1,7 @@
 use clap::Parser;
 
 #[derive(Parser, Default)]
-#[clap(about="Authenticate to AWS with MFA 🔐")]
+#[clap(about = "Authenticate to AWS with MFA 🔐")]
 pub struct Args {
     /// Name of the AWS region
     #[clap(short, long, default_value = "eu-west-1")]
@@ -29,5 +29,5 @@ pub struct Args {
 }
 
 pub fn parse_args() -> Args {
-    return Args::parse();
+    Args::parse()
 }
