@@ -1,10 +1,45 @@
 # aws-auth
 
+[![CI](https://github.com/jhandguy/aws-auth/actions/workflows/ci.yaml/badge.svg)](https://github.com/jhandguy/aws-auth/actions/workflows/ci.yaml)
+[![CD](https://github.com/jhandguy/aws-auth/actions/workflows/cd.yaml/badge.svg)](https://github.com/jhandguy/aws-auth/actions/workflows/cd.yaml)
+
 Authenticate to AWS with MFA 🔐
 
 ## Installation
 
-> Coming soon!
+### macOS
+
+#### 64-bit
+
+```shell
+curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/x86_64-apple-darwin.gz && tar xzvf x86_64-apple-darwin.gz
+```
+
+#### ARM64
+
+```shell
+curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/aarch64-apple-darwin.gz && tar xzvf aarch64-apple-darwin.gz
+```
+
+### Linux
+
+#### 32-bit
+
+```shell
+curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/i686-unknown-linux-gnu.gz && tar xzvf i686-unknown-linux-gnu.gz
+```
+
+#### 64-bit
+
+```shell
+curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/x86_64-unknown-linux-gnu.gz && tar xzvf x86_64-unknown-linux-gnu.gz
+```
+
+#### ARM64
+
+```shell
+curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/aarch64-unknown-linux-gnu.gz && tar xzvf aarch64-unknown-linux-gnu.gz
+```
 
 ## Usage
 

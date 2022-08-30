@@ -1,0 +1,78 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  draft:
+    name: Draft
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create draft release
+        run: gh release create ${{ github.ref_name }} --draft --generate-notes --repo ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  upload:
+    name: Upload
+    needs: draft
+    strategy:
+      matrix:
+        include:
+          - target: i686-unknown-linux-gnu
+            os: ubuntu-latest
+
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+
+          - target: x86_64-apple-darwin
+            os: macos-11
+
+          - target: aarch64-apple-darwin
+            os: macos-latest
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+          target: ${{ matrix.target }}
+
+      - name: Build release binary
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --locked --target ${{ matrix.target }}
+          use-cross: ${{ matrix.os == 'ubuntu-latest' }}
+
+      - name: Upload artifact
+        run: |
+          cd target/${{ matrix.target }}/release
+          tar czvf ../../../${{ matrix.target }}.gz ${{ github.event.repository.name }}
+          cd -
+          gh release upload ${{ github.ref_name }} ${{ matrix.target }}.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Publish
+    needs: upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish release
+        run: gh release edit ${{ github.ref_name }} --draft=false --repo ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
