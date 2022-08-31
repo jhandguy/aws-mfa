@@ -5,47 +5,8 @@
 
 Authenticate to AWS with MFA 🔐
 
-## Installation
-
-### macOS
-
-#### 64-bit
-
-```shell
-curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/x86_64-apple-darwin.gz && tar xzvf x86_64-apple-darwin.gz
-```
-
-#### ARM64
-
-```shell
-curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/aarch64-apple-darwin.gz && tar xzvf aarch64-apple-darwin.gz
-```
-
-### Linux
-
-#### 32-bit
-
-```shell
-curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/i686-unknown-linux-gnu.gz && tar xzvf i686-unknown-linux-gnu.gz
-```
-
-#### 64-bit
-
-```shell
-curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/x86_64-unknown-linux-gnu.gz && tar xzvf x86_64-unknown-linux-gnu.gz
-```
-
-#### ARM64
-
-```shell
-curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/aarch64-unknown-linux-gnu.gz && tar xzvf aarch64-unknown-linux-gnu.gz
-```
-
-## Usage
-
 ```shell
 ➜ aws-mfa -h
-
 aws-mfa
 Authenticate to AWS with MFA 🔐
 
@@ -64,24 +25,35 @@ OPTIONS:
     -s, --suffix <SUFFIX>        Suffix of the original AWS profile [default: noauth]
 ```
 
-### Create unauthorized credentials
+## Installation
 
-Add in `~/.aws/credentials`:
+**aws-mfa** is published on [crates.io](https://crates.io/crates/aws-mfa) and can be installed with
+
 ```shell
+cargo install aws-mfa
+```
+
+or downloaded as binary from the [releases page](https://github.com/jhandguy/aws-mfa/releases).
+
+## Usage
+
+Add basic credentials in `~/.aws/credentials`:
+
+```text
 [<profile_name>-noauth]
 aws_access_key_id = <aws_access_key_id>
 aws_secret_access_key = <aws_secret_access_key>
 ```
 
-### Generate authorized credentials
+> **Note**: make sure to add the `-noauth` suffix to the profile name
 
-Run in terminal:
+Run `aws-mfa`:
 ```shell
 aws-mfa -p <profile_name> -c <mfa_code>
 ```
 
-Output in `~/.aws/credentials`:
-```shell
+Check generated credentials in `~/.aws/credentials`:
+```text
 [<profile_name>]
 aws_access_key_id = <aws_access_key_id>
 aws_secret_access_key = <aws_secret_access_key>
