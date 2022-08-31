@@ -1,6 +1,4 @@
 use aws_config::profile::ProfileFileCredentialsProvider;
-use aws_sdk_sts::error::{GetCallerIdentityError, GetSessionTokenError};
-use aws_sdk_sts::types::SdkError;
 use aws_sdk_sts::{config, Client, Region};
 
 pub async fn get_client(profile: &str, suffix: &str, region: String) -> Client {
@@ -16,13 +14,18 @@ pub async fn get_client(profile: &str, suffix: &str, region: String) -> Client {
     Client::from_conf(config)
 }
 
-pub async fn get_mfa_device_arn(
-    client: &Client,
-) -> Result<String, SdkError<GetCallerIdentityError>> {
+pub async fn get_mfa_device_arn(client: &Client) -> anyhow::Result<String> {
     let identity = client.get_caller_identity().send().await?;
 
-    let account = identity.account().unwrap();
-    let user = identity.arn().unwrap().split('/').last().unwrap();
+    let account = identity
+        .account()
+        .ok_or_else(|| anyhow::anyhow!("account identity missing"))?;
+    let user = identity
+        .arn()
+        .ok_or_else(|| anyhow::anyhow!("account arn missing"))?
+        .split('/')
+        .last()
+        .ok_or_else(|| anyhow::anyhow!("cannot parse arn"))?;
     let arn = format!("arn:aws:iam::{}:mfa/{}", account, user);
 
     Ok(arn)
@@ -34,7 +37,7 @@ pub async fn get_auth_credential(
     arn: &str,
     code: &str,
     duration: i32,
-) -> Result<String, SdkError<GetSessionTokenError>> {
+) -> anyhow::Result<String> {
     let session = client
         .get_session_token()
         .serial_number(arn)
@@ -43,10 +46,18 @@ pub async fn get_auth_credential(
         .send()
         .await?;
 
-    let credentials = session.credentials().unwrap();
-    let access_key_id = credentials.access_key_id().unwrap();
-    let secret_access_key = credentials.secret_access_key().unwrap();
-    let session_token = credentials.session_token().unwrap();
+    let credentials = session
+        .credentials()
+        .ok_or_else(|| anyhow::anyhow!("credentials field missing"))?;
+    let access_key_id = credentials
+        .access_key_id()
+        .ok_or_else(|| anyhow::anyhow!("access_key_id field missing"))?;
+    let secret_access_key = credentials
+        .secret_access_key()
+        .ok_or_else(|| anyhow::anyhow!("secret_access_key field missing"))?;
+    let session_token = credentials
+        .session_token()
+        .ok_or_else(|| anyhow::anyhow!("session_token field missing"))?;
 
     let credential = format!(
         "
