@@ -2,6 +2,15 @@
 name = "aws-auth"
 version = "0.1.0"
 edition = "2021"
+authors = ["Jean Mainguy"]
+categories = ["command-line-utilities"]
+keywords = ["aws", "mfa", "2fa"]
+license-file = "LICENSE"
+readme = "README.md"
+repository = "https://github.com/jhandguy/aws-auth"
+description = """
+Authenticate to AWS with MFA 🔐
+"""
 
 [dependencies]
 anyhow = "1.0.63"
