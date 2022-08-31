@@ -1,7 +1,7 @@
-# aws-auth
+# aws-mfa
 
-[![CI](https://github.com/jhandguy/aws-auth/actions/workflows/ci.yaml/badge.svg)](https://github.com/jhandguy/aws-auth/actions/workflows/ci.yaml)
-[![CD](https://github.com/jhandguy/aws-auth/actions/workflows/cd.yaml/badge.svg)](https://github.com/jhandguy/aws-auth/actions/workflows/cd.yaml)
+[![CI](https://github.com/jhandguy/aws-mfa/actions/workflows/ci.yaml/badge.svg)](https://github.com/jhandguy/aws-mfa/actions/workflows/ci.yaml)
+[![CD](https://github.com/jhandguy/aws-mfa/actions/workflows/cd.yaml/badge.svg)](https://github.com/jhandguy/aws-mfa/actions/workflows/cd.yaml)
 
 Authenticate to AWS with MFA 🔐
 
@@ -12,13 +12,13 @@ Authenticate to AWS with MFA 🔐
 #### 64-bit
 
 ```shell
-curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/x86_64-apple-darwin.gz && tar xzvf x86_64-apple-darwin.gz
+curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/x86_64-apple-darwin.gz && tar xzvf x86_64-apple-darwin.gz
 ```
 
 #### ARM64
 
 ```shell
-curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/aarch64-apple-darwin.gz && tar xzvf aarch64-apple-darwin.gz
+curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/aarch64-apple-darwin.gz && tar xzvf aarch64-apple-darwin.gz
 ```
 
 ### Linux
@@ -26,31 +26,31 @@ curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/aarch64-a
 #### 32-bit
 
 ```shell
-curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/i686-unknown-linux-gnu.gz && tar xzvf i686-unknown-linux-gnu.gz
+curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/i686-unknown-linux-gnu.gz && tar xzvf i686-unknown-linux-gnu.gz
 ```
 
 #### 64-bit
 
 ```shell
-curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/x86_64-unknown-linux-gnu.gz && tar xzvf x86_64-unknown-linux-gnu.gz
+curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/x86_64-unknown-linux-gnu.gz && tar xzvf x86_64-unknown-linux-gnu.gz
 ```
 
 #### ARM64
 
 ```shell
-curl -OL https://github.com/jhandguy/aws-auth/releases/download/v0.1.0/aarch64-unknown-linux-gnu.gz && tar xzvf aarch64-unknown-linux-gnu.gz
+curl -OL https://github.com/jhandguy/aws-mfa/releases/download/v0.1.0/aarch64-unknown-linux-gnu.gz && tar xzvf aarch64-unknown-linux-gnu.gz
 ```
 
 ## Usage
 
 ```shell
-➜ aws-auth -h
+➜ aws-mfa -h
 
-aws-auth
+aws-mfa
 Authenticate to AWS with MFA 🔐
 
 USAGE:
-    aws-auth [OPTIONS] --code <CODE> <HOME>
+    aws-mfa [OPTIONS] --code <CODE> <HOME>
 
 ARGS:
     <HOME>    Home directory containing the AWS hidden folder [env: HOME=/Users/JohnDoe]
@@ -77,7 +77,7 @@ aws_secret_access_key = <aws_secret_access_key>
 
 Run in terminal:
 ```shell
-aws-auth -p <profile_name> -c <mfa_code>
+aws-mfa -p <profile_name> -c <mfa_code>
 ```
 
 Output in `~/.aws/credentials`:
