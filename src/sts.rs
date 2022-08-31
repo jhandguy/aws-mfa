@@ -60,3 +60,77 @@ aws_session_token = {}",
 
     Ok(credential)
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{get_auth_credential, get_mfa_device_arn};
+    use aws_sdk_sts::{Client, Config, Credentials, Region};
+    use aws_smithy_client::test_connection::capture_request;
+    use aws_smithy_http::body::SdkBody;
+    use http::Response;
+
+    #[tokio::test]
+    async fn test_get_mfa_device_arn() {
+        let credentials = Credentials::new("", "", None, None, "");
+        let conf = Config::builder()
+            .region(Region::new("eu-west-1"))
+            .credentials_provider(credentials)
+            .build();
+        let response = Response::builder()
+            .status(200)
+            .body(SdkBody::from(
+                "
+        <GetCallerIdentityResponse>
+            <GetCallerIdentityResult>
+                <UserId>user_id</UserId>
+                <Account>account</Account>
+                <Arn>arn:aws:iam::account:user/user_name</Arn>
+            </GetCallerIdentityResult>
+        </GetCallerIdentityResponse>",
+            ))
+            .expect("invalid response body");
+        let (conn, _request) = capture_request(Some(response));
+        let client = Client::from_conf_conn(conf, conn);
+        let arn = get_mfa_device_arn(&client).await;
+
+        assert_eq!(arn.unwrap(), "arn:aws:iam::account:mfa/user_name");
+    }
+
+    #[tokio::test]
+    async fn test_get_auth_credential() {
+        let credentials = Credentials::new("", "", None, None, "");
+        let conf = Config::builder()
+            .region(Region::new("eu-west-1"))
+            .credentials_provider(credentials)
+            .build();
+        let response = Response::builder()
+            .status(200)
+            .body(SdkBody::from(
+                "
+        <GetSessionTokenResponse>
+            <GetSessionTokenResult>
+                <Credentials>
+                    <AccessKeyId>access_key_id</AccessKeyId>
+                    <SecretAccessKey>secret_access_key</SecretAccessKey>
+                    <SessionToken>session_token</SessionToken>
+                    <Expiration>2022-08-31T19:55:58Z</Expiration>
+                </Credentials>
+            </GetSessionTokenResult>
+        </GetSessionTokenResponse>",
+            ))
+            .expect("invalid response body");
+        let (conn, _request) = capture_request(Some(response));
+        let client = Client::from_conf_conn(conf, conn);
+        let arn = get_auth_credential(&client, "profile", "arn", "code", 0).await;
+
+        assert_eq!(
+            arn.unwrap(),
+            "
+
+[profile]
+aws_access_key_id = access_key_id
+aws_secret_access_key = secret_access_key
+aws_session_token = session_token"
+        );
+    }
+}
