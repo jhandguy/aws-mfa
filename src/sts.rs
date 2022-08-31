@@ -81,16 +81,14 @@ mod tests {
     use http::Response;
 
     #[tokio::test]
-    async fn test_get_mfa_device_arn() {
+    async fn test_get_mfa_device_arn() -> anyhow::Result<()> {
         let credentials = Credentials::new("", "", None, None, "");
         let conf = Config::builder()
             .region(Region::new("eu-west-1"))
             .credentials_provider(credentials)
             .build();
-        let response = Response::builder()
-            .status(200)
-            .body(SdkBody::from(
-                "
+        let response = Response::builder().status(200).body(SdkBody::from(
+            "
         <GetCallerIdentityResponse>
             <GetCallerIdentityResult>
                 <UserId>user_id</UserId>
@@ -98,26 +96,25 @@ mod tests {
                 <Arn>arn:aws:iam::account:user/user_name</Arn>
             </GetCallerIdentityResult>
         </GetCallerIdentityResponse>",
-            ))
-            .expect("invalid response body");
+        ))?;
         let (conn, _request) = capture_request(Some(response));
         let client = Client::from_conf_conn(conf, conn);
-        let arn = get_mfa_device_arn(&client).await;
+        let arn = get_mfa_device_arn(&client).await?;
 
-        assert_eq!(arn.unwrap(), "arn:aws:iam::account:mfa/user_name");
+        assert_eq!(arn, "arn:aws:iam::account:mfa/user_name");
+
+        Ok(())
     }
 
     #[tokio::test]
-    async fn test_get_auth_credential() {
+    async fn test_get_auth_credential() -> anyhow::Result<()> {
         let credentials = Credentials::new("", "", None, None, "");
         let conf = Config::builder()
             .region(Region::new("eu-west-1"))
             .credentials_provider(credentials)
             .build();
-        let response = Response::builder()
-            .status(200)
-            .body(SdkBody::from(
-                "
+        let response = Response::builder().status(200).body(SdkBody::from(
+            "
         <GetSessionTokenResponse>
             <GetSessionTokenResult>
                 <Credentials>
@@ -128,14 +125,13 @@ mod tests {
                 </Credentials>
             </GetSessionTokenResult>
         </GetSessionTokenResponse>",
-            ))
-            .expect("invalid response body");
+        ))?;
         let (conn, _request) = capture_request(Some(response));
         let client = Client::from_conf_conn(conf, conn);
-        let arn = get_auth_credential(&client, "profile", "arn", "code", 0).await;
+        let arn = get_auth_credential(&client, "profile", "arn", "code", 0).await?;
 
         assert_eq!(
-            arn.unwrap(),
+            arn,
             "
 
 [profile]
@@ -143,5 +139,7 @@ aws_access_key_id = access_key_id
 aws_secret_access_key = secret_access_key
 aws_session_token = session_token"
         );
+
+        Ok(())
     }
 }
