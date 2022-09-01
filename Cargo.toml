@@ -1,6 +1,6 @@
 [package]
 name = "aws-mfa"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Jean Mainguy"]
 categories = ["command-line-utilities"]
@@ -14,13 +14,13 @@ Authenticate to AWS with MFA 🔐
 
 [dependencies]
 anyhow = "1.0.63"
-aws-config = "0.47.0"
-aws-sdk-sts = "0.17.0"
+aws-config = "0.48.0"
+aws-sdk-sts = "0.18.0"
 clap = { version = "3.2.17", features = ["derive", "env"] }
 thiserror = "1.0.33"
 tokio = { version = "1", features = ["full"] }
 
 [dev-dependencies]
-aws-smithy-client = { version = "0.47.0", features = ["test-util"]}
-aws-smithy-http = "0.47.0"
+aws-smithy-client = { version = "0.48.0", features = ["test-util"]}
+aws-smithy-http = "0.48.0"
 http = "0.2.8"
