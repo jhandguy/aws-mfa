@@ -3,7 +3,6 @@ use crate::io::save_auth_credential;
 use crate::sts::{get_auth_credential, get_client, get_mfa_device_arn};
 
 mod args;
-mod error;
 mod io;
 mod sts;
 
