@@ -1,13 +1,14 @@
 use crate::args::parse_args;
 use crate::io::save_auth_credential;
 use crate::sts::{get_auth_credential, get_client, get_mfa_device_arn};
+use anyhow::Result;
 
 mod args;
 mod io;
 mod sts;
 
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
+async fn main() -> Result<()> {
     let args = parse_args();
     let client = get_client(&args.profile, &args.suffix, args.region).await;
     let arn = get_mfa_device_arn(&client).await?;

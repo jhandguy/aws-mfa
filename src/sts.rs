@@ -1,4 +1,4 @@
-use anyhow::anyhow;
+use anyhow::{anyhow, Result};
 use aws_config::load_from_env;
 use aws_config::profile::ProfileFileCredentialsProvider;
 use aws_sdk_sts::config::Builder;
@@ -17,7 +17,7 @@ pub async fn get_client(profile: &str, suffix: &str, region: String) -> Client {
     Client::from_conf(config)
 }
 
-pub async fn get_mfa_device_arn(client: &Client) -> anyhow::Result<String> {
+pub async fn get_mfa_device_arn(client: &Client) -> Result<String> {
     let identity = client.get_caller_identity().send().await?;
 
     let account = identity
@@ -40,7 +40,7 @@ pub async fn get_auth_credential(
     arn: &str,
     code: &str,
     duration: i32,
-) -> anyhow::Result<String> {
+) -> Result<String> {
     let session = client
         .get_session_token()
         .serial_number(arn)
@@ -78,13 +78,14 @@ aws_session_token = {}",
 #[cfg(test)]
 mod tests {
     use crate::{get_auth_credential, get_mfa_device_arn};
+    use anyhow::Result;
     use aws_sdk_sts::{Client, Config, Credentials, Region};
     use aws_smithy_client::test_connection::capture_request;
     use aws_smithy_http::body::SdkBody;
     use http::Response;
 
     #[tokio::test]
-    async fn test_get_mfa_device_arn() -> anyhow::Result<()> {
+    async fn test_get_mfa_device_arn() -> Result<()> {
         let credentials = Credentials::new("", "", None, None, "");
         let conf = Config::builder()
             .region(Region::new("eu-west-1"))
@@ -110,7 +111,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_get_auth_credential() -> anyhow::Result<()> {
+    async fn test_get_auth_credential() -> Result<()> {
         let credentials = Credentials::new("", "", None, None, "");
         let conf = Config::builder()
             .region(Region::new("eu-west-1"))
