@@ -1,8 +1,8 @@
+use anyhow::Result;
 use std::fs::{read_to_string, write};
-use std::io::Error as IOError;
 use std::ops::Add;
 
-pub fn save_auth_credential(home: &str, profile: &str, credential: &str) -> Result<(), IOError> {
+pub fn save_auth_credential(home: &str, profile: &str, credential: &str) -> Result<()> {
     let file_path = format!("{}/.aws/credentials", home);
     let file_content = read_to_string(&file_path)?
         .split("\n\n")
@@ -11,5 +11,7 @@ pub fn save_auth_credential(home: &str, profile: &str, credential: &str) -> Resu
         .join("\n\n")
         .add(credential);
 
-    return write(&file_path, file_content.as_bytes());
+    write(&file_path, file_content.as_bytes())?;
+
+    Ok(())
 }
