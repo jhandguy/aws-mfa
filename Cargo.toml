@@ -15,7 +15,7 @@ Authenticate to AWS with MFA 🔐
 [dependencies]
 anyhow = "1.0.65"
 aws-config = "0.48.0"
-aws-sdk-sts = "0.18.0"
+aws-sdk-sts = "0.19.0"
 clap = { version = "3.2.21", features = ["derive", "env"] }
 tokio = { version = "1", features = ["full"] }
 
