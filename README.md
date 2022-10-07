@@ -1,7 +1,10 @@
 # aws-mfa
 
-[![CI](https://github.com/jhandguy/aws-mfa/actions/workflows/ci.yaml/badge.svg)](https://github.com/jhandguy/aws-mfa/actions/workflows/ci.yaml)
-[![CD](https://github.com/jhandguy/aws-mfa/actions/workflows/cd.yaml/badge.svg)](https://github.com/jhandguy/aws-mfa/actions/workflows/cd.yaml)
+[![Version](https://img.shields.io/crates/v/aws-mfa)](https://crates.io/crates/aws-mfa)
+[![Downloads](https://img.shields.io/crates/d/aws-mfa)](https://crates.io/crates/aws-mfa)
+[![License](https://img.shields.io/crates/l/aws-mfa)](LICENSE)
+[![Build](https://img.shields.io/github/workflow/status/jhandguy/aws-mfa/CI/main)](https://github.com/jhandguy/aws-mfa/actions/workflows/ci.yaml)
+[![Release](https://img.shields.io/github/workflow/status/jhandguy/aws-mfa/CD?label=release)](https://github.com/jhandguy/aws-mfa/actions/workflows/cd.yaml)
 
 Authenticate to AWS with MFA 🔐
 
