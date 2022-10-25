@@ -20,6 +20,6 @@ clap = { version = "4.0.18", features = ["derive", "env"] }
 tokio = { version = "1.21.2", features = ["full"] }
 
 [dev-dependencies]
-aws-smithy-client = { version = "0.49.0", features = ["test-util"]}
+aws-smithy-client = { version = "0.51.0", features = ["test-util"]}
 aws-smithy-http = "0.49.0"
 http = "0.2.8"
