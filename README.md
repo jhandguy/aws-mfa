@@ -10,22 +10,20 @@ Authenticate to AWS with MFA 🔐
 
 ```shell
 ➜ aws-mfa -h
-aws-mfa
 Authenticate to AWS with MFA 🔐
 
-USAGE:
-    aws-mfa [OPTIONS] --code <CODE> <HOME>
+Usage: aws-mfa [OPTIONS] --code <CODE> <HOME>
 
-ARGS:
-    <HOME>    Home directory containing the AWS hidden folder [env: HOME=/Users/JohnDoe]
+Arguments:
+  <HOME>  Home directory containing the AWS hidden folder [env: HOME=/Users/JohnDoe]
 
-OPTIONS:
-    -c, --code <CODE>            MFA code
-    -d, --duration <DURATION>    Session duration in seconds [default: 3600]
-    -h, --help                   Print help information
-    -p, --profile <PROFILE>      Name of the AWS profile [default: default]
-    -r, --region <REGION>        Name of the AWS region [default: eu-west-1]
-    -s, --suffix <SUFFIX>        Suffix of the original AWS profile [default: noauth]
+Options:
+  -r, --region <REGION>      Name of the AWS region [default: eu-west-1]
+  -p, --profile <PROFILE>    Name of the AWS profile [default: default]
+  -s, --suffix <SUFFIX>      Suffix of the original AWS profile [default: noauth]
+  -c, --code <CODE>          MFA code
+  -d, --duration <DURATION>  Session duration in seconds [default: 3600]
+  -h, --help                 Print help information
 ```
 
 ## Installation
