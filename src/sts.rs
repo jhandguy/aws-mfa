@@ -4,13 +4,15 @@ use aws_config::profile::ProfileFileCredentialsProvider;
 use aws_sdk_sts::config::Builder;
 use aws_sdk_sts::{Client, Region};
 
-pub async fn get_client(profile: &str, suffix: &str, region: String) -> Client {
+use crate::auth::Credentials;
+
+pub async fn get_client(profile: &str, suffix: &str, region: &str) -> Client {
     let sdk_config = load_from_env().await;
     let provider = ProfileFileCredentialsProvider::builder()
         .profile_name(format!("{}-{}", profile, suffix))
         .build();
     let config = Builder::from(&sdk_config)
-        .region(Region::new(region))
+        .region(Region::new(String::from(region)))
         .credentials_provider(provider)
         .build();
 
@@ -34,13 +36,12 @@ pub async fn get_mfa_device_arn(client: &Client) -> Result<String> {
     Ok(arn)
 }
 
-pub async fn get_auth_credential(
+pub async fn get_auth_credentials(
     client: &Client,
-    profile: &str,
     arn: &str,
     code: &str,
     duration: i32,
-) -> Result<String> {
+) -> Result<Credentials> {
     let session = client
         .get_session_token()
         .serial_number(arn)
@@ -62,27 +63,22 @@ pub async fn get_auth_credential(
         .session_token()
         .ok_or_else(|| anyhow!("session_token field missing"))?;
 
-    let credential = format!(
-        "
-
-[{}]
-aws_access_key_id = {}
-aws_secret_access_key = {}
-aws_session_token = {}",
-        profile, access_key_id, secret_access_key, session_token
-    );
-
-    Ok(credential)
+    Ok(Credentials::new(
+        access_key_id,
+        secret_access_key,
+        session_token,
+    ))
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{get_auth_credential, get_mfa_device_arn};
     use anyhow::Result;
     use aws_sdk_sts::{Client, Config, Credentials, Region};
     use aws_smithy_client::test_connection::capture_request;
     use aws_smithy_http::body::SdkBody;
     use http::Response;
+
+    use crate::sts::{get_auth_credentials, get_mfa_device_arn};
 
     #[tokio::test]
     async fn test_get_mfa_device_arn() -> Result<()> {
@@ -111,7 +107,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_get_auth_credential() -> Result<()> {
+    async fn test_get_auth_credentials() -> Result<()> {
         let credentials = Credentials::new("", "", None, None, "");
         let conf = Config::builder()
             .region(Region::new("eu-west-1"))
@@ -132,17 +128,11 @@ mod tests {
         ))?;
         let (conn, _request) = capture_request(Some(response));
         let client = Client::from_conf_conn(conf, conn);
-        let arn = get_auth_credential(&client, "profile", "arn", "code", 0).await?;
+        let credentials = get_auth_credentials(&client, "arn", "code", 0).await?;
 
-        assert_eq!(
-            arn,
-            "
-
-[profile]
-aws_access_key_id = access_key_id
-aws_secret_access_key = secret_access_key
-aws_session_token = session_token"
-        );
+        assert_eq!(credentials.access_key_id(), "access_key_id");
+        assert_eq!(credentials.secret_access_key(), "secret_access_key");
+        assert_eq!(credentials.session_token(), "session_token");
 
         Ok(())
     }

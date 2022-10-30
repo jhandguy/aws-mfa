@@ -1,4 +1,7 @@
+use anyhow::Result;
 use clap::Parser;
+
+use aws_mfa::auth::authenticate;
 
 #[derive(Parser, Default)]
 #[clap(about = "Authenticate to AWS with MFA 🔐")]
@@ -28,6 +31,18 @@ pub struct Args {
     pub home: String,
 }
 
-pub fn parse_args() -> Args {
-    Args::parse()
+#[tokio::main]
+async fn main() -> Result<()> {
+    let args = Args::parse();
+    authenticate(
+        &args.profile,
+        &args.suffix,
+        &args.region,
+        &args.code,
+        args.duration,
+        &args.home,
+    )
+    .await?;
+
+    Ok(())
 }

@@ -1,6 +1,6 @@
 [package]
 name = "aws-mfa"
-version = "0.1.15"
+version = "0.2.0"
 edition = "2021"
 authors = ["Jean Mainguy"]
 categories = ["command-line-utilities"]
@@ -11,6 +11,15 @@ repository = "https://github.com/jhandguy/aws-mfa"
 description = """
 Authenticate to AWS with MFA 🔐
 """
+
+[lib]
+name = "aws_mfa"
+path = "src/lib.rs"
+
+[[bin]]
+name = "aws-mfa"
+test = false
+doc = false
 
 [dependencies]
 anyhow = "1.0.66"
