@@ -5,6 +5,7 @@
 [![License](https://img.shields.io/crates/l/aws-mfa)](LICENSE)
 [![Build](https://img.shields.io/github/workflow/status/jhandguy/aws-mfa/CI/main)](https://github.com/jhandguy/aws-mfa/actions/workflows/ci.yaml)
 [![Release](https://img.shields.io/github/workflow/status/jhandguy/aws-mfa/CD?label=release)](https://github.com/jhandguy/aws-mfa/actions/workflows/cd.yaml)
+[![Deployment](https://shields.io/github/deployments/jhandguy/aws-mfa/release?label=deployment)](https://github.com/jhandguy/aws-mfa/deployments/activity_log?environment=release)
 
 Authenticate to AWS with MFA 🔐
 
