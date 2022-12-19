@@ -23,7 +23,7 @@ test = false
 doc = false
 
 [dependencies]
-anyhow = "1.0.66"
+anyhow = "1.0.68"
 aws-config = "0.51.0"
 aws-sdk-sts = "0.21.0"
 clap = { version = "4.0.29", features = ["derive", "env"] }
