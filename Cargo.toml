@@ -1,6 +1,6 @@
 [package]
 name = "aws-mfa"
-version = "0.2.9"
+version = "0.2.10"
 edition = "2021"
 authors = ["Jean Mainguy"]
 categories = ["command-line-utilities"]
@@ -8,6 +8,7 @@ keywords = ["aws", "mfa", "2fa"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/jhandguy/aws-mfa"
+documentation = "https://docs.rs/aws-mfa"
 description = """
 Authenticate to AWS with MFA 🔐
 """
@@ -23,13 +24,13 @@ test = false
 doc = false
 
 [dependencies]
-anyhow = "1.0.66"
-aws-config = "0.51.0"
-aws-sdk-sts = "0.21.0"
-clap = { version = "4.0.29", features = ["derive", "env"] }
+anyhow = "1.0.68"
+aws-config = "0.52.0"
+aws-sdk-sts = "0.22.0"
+clap = { version = "4.0.30", features = ["derive", "env"] }
 tokio = { version = "1.23.0", features = ["full"] }
 
 [dev-dependencies]
-aws-smithy-client = { version = "0.51.0", features = ["test-util"]}
-aws-smithy-http = "0.51.0"
+aws-smithy-client = { version = "0.52.0", features = ["test-util"]}
+aws-smithy-http = "0.52.0"
 http = "0.2.8"

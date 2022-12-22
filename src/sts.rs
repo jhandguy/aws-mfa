@@ -83,10 +83,6 @@ mod tests {
     #[tokio::test]
     async fn test_get_mfa_device_arn() -> Result<()> {
         let credentials = Credentials::new("", "", None, None, "");
-        let conf = Config::builder()
-            .region(Region::new("eu-west-1"))
-            .credentials_provider(credentials)
-            .build();
         let response = Response::builder().status(200).body(SdkBody::from(
             "
         <GetCallerIdentityResponse>
@@ -98,7 +94,12 @@ mod tests {
         </GetCallerIdentityResponse>",
         ))?;
         let (conn, _request) = capture_request(Some(response));
-        let client = Client::from_conf_conn(conf, conn);
+        let conf = Config::builder()
+            .region(Region::new("eu-west-1"))
+            .credentials_provider(credentials)
+            .http_connector(conn)
+            .build();
+        let client = Client::from_conf(conf);
         let arn = get_mfa_device_arn(&client).await?;
 
         assert_eq!(arn, "arn:aws:iam::account:mfa/user_name");
@@ -109,10 +110,6 @@ mod tests {
     #[tokio::test]
     async fn test_get_auth_credentials() -> Result<()> {
         let credentials = Credentials::new("", "", None, None, "");
-        let conf = Config::builder()
-            .region(Region::new("eu-west-1"))
-            .credentials_provider(credentials)
-            .build();
         let response = Response::builder().status(200).body(SdkBody::from(
             "
         <GetSessionTokenResponse>
@@ -127,7 +124,12 @@ mod tests {
         </GetSessionTokenResponse>",
         ))?;
         let (conn, _request) = capture_request(Some(response));
-        let client = Client::from_conf_conn(conf, conn);
+        let conf = Config::builder()
+            .region(Region::new("eu-west-1"))
+            .credentials_provider(credentials)
+            .http_connector(conn)
+            .build();
+        let client = Client::from_conf(conf);
         let credentials = get_auth_credentials(&client, "arn", "code", 0).await?;
 
         assert_eq!(credentials.access_key_id(), "access_key_id");
