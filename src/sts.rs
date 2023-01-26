@@ -9,7 +9,7 @@ use crate::auth::Credentials;
 pub async fn get_client(profile: &str, suffix: &str, region: &str) -> Client {
     let sdk_config = load_from_env().await;
     let provider = ProfileFileCredentialsProvider::builder()
-        .profile_name(format!("{}-{}", profile, suffix))
+        .profile_name(format!("{profile}-{suffix}"))
         .build();
     let config = Builder::from(&sdk_config)
         .region(Region::new(String::from(region)))
@@ -31,7 +31,7 @@ pub async fn get_mfa_device_arn(client: &Client) -> Result<String> {
         .split('/')
         .last()
         .ok_or_else(|| anyhow!("cannot parse arn"))?;
-    let arn = format!("arn:aws:iam::{}:mfa/{}", account, user);
+    let arn = format!("arn:aws:iam::{account}:mfa/{user}");
 
     Ok(arn)
 }
