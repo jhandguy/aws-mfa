@@ -33,4 +33,4 @@ tokio = { version = "1.25.0", features = ["full"] }
 [dev-dependencies]
 aws-smithy-client = { version = "0.54.1", features = ["test-util"]}
 aws-smithy-http = "0.54.1"
-http = "0.2.8"
+http = "0.2.9"
