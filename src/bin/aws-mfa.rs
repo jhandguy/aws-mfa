@@ -4,7 +4,7 @@ use clap::Parser;
 use aws_mfa::auth::authenticate;
 
 #[derive(Parser, Default)]
-#[clap(about = "Authenticate to AWS with MFA 🔐")]
+#[clap(version, about)]
 pub struct Args {
     /// Name of the AWS region
     #[clap(short, long, default_value = "eu-west-1")]

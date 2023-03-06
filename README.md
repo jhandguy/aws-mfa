@@ -23,7 +23,8 @@ Options:
   -s, --suffix <SUFFIX>      Suffix of the original AWS profile [default: noauth]
   -c, --code <CODE>          MFA code
   -d, --duration <DURATION>  Session duration in seconds [default: 3600]
-  -h, --help                 Print help information
+  -h, --help                 Print help
+  -V, --version              Print version
 ```
 
 ## Installation
