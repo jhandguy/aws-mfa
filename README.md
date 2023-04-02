@@ -18,13 +18,14 @@ Arguments:
   <HOME>  Home directory containing the AWS hidden folder [env: HOME=/Users/JohnDoe]
 
 Options:
-  -r, --region <REGION>      Name of the AWS region [default: eu-west-1]
-  -p, --profile <PROFILE>    Name of the AWS profile [default: default]
-  -s, --suffix <SUFFIX>      Suffix of the original AWS profile [default: noauth]
-  -c, --code <CODE>          MFA code
-  -d, --duration <DURATION>  Session duration in seconds [default: 3600]
-  -h, --help                 Print help
-  -V, --version              Print version
+  -r, --region <REGION>          Name of the AWS region [default: eu-west-1]
+  -p, --profile <PROFILE>        Name of the AWS profile [default: default]
+  -s, --suffix <SUFFIX>          Suffix of the original AWS profile [default: noauth]
+  -c, --code <CODE>              MFA code
+  -d, --duration <DURATION>      Session duration in seconds [default: 3600]
+  -i, --identifier <IDENTIFIER>  MFA device identifier (defaults to AWS username) [default: ]
+  -h, --help                     Print help
+  -V, --version                  Print version
 ```
 
 ## Installation

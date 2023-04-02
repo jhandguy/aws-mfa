@@ -26,6 +26,10 @@ pub struct Args {
     #[clap(short, long, default_value_t = 3600)]
     pub duration: i32,
 
+    /// MFA device identifier (defaults to AWS username)
+    #[clap(short, long, default_value = "")]
+    pub identifier: String,
+
     /// Home directory containing the AWS hidden folder
     #[clap(env)]
     pub home: String,
@@ -40,6 +44,7 @@ async fn main() -> Result<()> {
         &args.region,
         &args.code,
         args.duration,
+        &args.identifier,
         &args.home,
     )
     .await?;

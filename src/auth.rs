@@ -39,10 +39,11 @@ pub async fn authenticate(
     region: &str,
     code: &str,
     duration: i32,
+    identifier: &str,
     home: &str,
 ) -> Result<Credentials> {
     let client = get_client(profile, suffix, region).await;
-    let arn = get_mfa_device_arn(&client).await?;
+    let arn = get_mfa_device_arn(&client, identifier).await?;
     let credentials = get_auth_credentials(&client, &arn, code, duration).await?;
     save_auth_credentials(home, profile, &credentials)?;
 

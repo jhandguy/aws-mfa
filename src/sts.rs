@@ -1,8 +1,8 @@
 use anyhow::{anyhow, Result};
 use aws_config::load_from_env;
 use aws_config::profile::ProfileFileCredentialsProvider;
-use aws_sdk_sts::config::Builder;
-use aws_sdk_sts::{Client, Region};
+use aws_sdk_sts::config::{Builder, Region};
+use aws_sdk_sts::Client;
 
 use crate::auth::Credentials;
 
@@ -19,7 +19,7 @@ pub async fn get_client(profile: &str, suffix: &str, region: &str) -> Client {
     Client::from_conf(config)
 }
 
-pub async fn get_mfa_device_arn(client: &Client) -> Result<String> {
+pub async fn get_mfa_device_arn(client: &Client, identifier: &str) -> Result<String> {
     let identity = client.get_caller_identity().send().await?;
 
     let account = identity
@@ -31,7 +31,13 @@ pub async fn get_mfa_device_arn(client: &Client) -> Result<String> {
         .split('/')
         .last()
         .ok_or_else(|| anyhow!("cannot parse arn"))?;
-    let arn = format!("arn:aws:iam::{account}:mfa/{user}");
+
+    let identifier = match identifier {
+        "" => user,
+        _ => identifier,
+    };
+
+    let arn = format!("arn:aws:iam::{account}:mfa/{identifier}");
 
     Ok(arn)
 }
@@ -73,15 +79,18 @@ pub async fn get_auth_credentials(
 #[cfg(test)]
 mod tests {
     use anyhow::Result;
-    use aws_sdk_sts::{Client, Config, Credentials, Region};
+    use aws_credential_types::Credentials;
+    use aws_sdk_sts::config::Region;
+    use aws_sdk_sts::{Client, Config};
     use aws_smithy_client::test_connection::capture_request;
     use aws_smithy_http::body::SdkBody;
-    use http::Response;
+    use http::header::CONTENT_TYPE;
+    use http::{HeaderValue, Method, Response};
 
     use crate::sts::{get_auth_credentials, get_mfa_device_arn};
 
     #[tokio::test]
-    async fn test_get_mfa_device_arn() -> Result<()> {
+    async fn test_get_mfa_device_arn_without_identifier() -> Result<()> {
         let credentials = Credentials::new("", "", None, None, "");
         let response = Response::builder().status(200).body(SdkBody::from(
             "
@@ -93,16 +102,61 @@ mod tests {
             </GetCallerIdentityResult>
         </GetCallerIdentityResponse>",
         ))?;
-        let (conn, _request) = capture_request(Some(response));
+        let (conn, request) = capture_request(Some(response));
         let conf = Config::builder()
             .region(Region::new("eu-west-1"))
             .credentials_provider(credentials)
             .http_connector(conn)
             .build();
         let client = Client::from_conf(conf);
-        let arn = get_mfa_device_arn(&client).await?;
+        let arn = get_mfa_device_arn(&client, "").await?;
 
+        let request = request.expect_request();
+        assert_eq!(Method::POST, request.method());
+        assert_eq!("https://sts.eu-west-1.amazonaws.com/", request.uri());
+        assert_eq!(
+            Some(&HeaderValue::from_static(
+                "application/x-www-form-urlencoded"
+            )),
+            request.headers().get(CONTENT_TYPE)
+        );
         assert_eq!(arn, "arn:aws:iam::account:mfa/user_name");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_get_mfa_device_arn_with_identifier() -> Result<()> {
+        let credentials = Credentials::new("", "", None, None, "");
+        let response = Response::builder().status(200).body(SdkBody::from(
+            "
+        <GetCallerIdentityResponse>
+            <GetCallerIdentityResult>
+                <UserId>user_id</UserId>
+                <Account>account</Account>
+                <Arn>arn:aws:iam::account:user/user_name</Arn>
+            </GetCallerIdentityResult>
+        </GetCallerIdentityResponse>",
+        ))?;
+        let (conn, request) = capture_request(Some(response));
+        let conf = Config::builder()
+            .region(Region::new("eu-west-1"))
+            .credentials_provider(credentials)
+            .http_connector(conn)
+            .build();
+        let client = Client::from_conf(conf);
+        let arn = get_mfa_device_arn(&client, "device_id").await?;
+
+        let request = request.expect_request();
+        assert_eq!(Method::POST, request.method());
+        assert_eq!("https://sts.eu-west-1.amazonaws.com/", request.uri());
+        assert_eq!(
+            Some(&HeaderValue::from_static(
+                "application/x-www-form-urlencoded"
+            )),
+            request.headers().get(CONTENT_TYPE)
+        );
+        assert_eq!(arn, "arn:aws:iam::account:mfa/device_id");
 
         Ok(())
     }
@@ -123,7 +177,7 @@ mod tests {
             </GetSessionTokenResult>
         </GetSessionTokenResponse>",
         ))?;
-        let (conn, _request) = capture_request(Some(response));
+        let (conn, request) = capture_request(Some(response));
         let conf = Config::builder()
             .region(Region::new("eu-west-1"))
             .credentials_provider(credentials)
@@ -132,6 +186,15 @@ mod tests {
         let client = Client::from_conf(conf);
         let credentials = get_auth_credentials(&client, "arn", "code", 0).await?;
 
+        let request = request.expect_request();
+        assert_eq!(Method::POST, request.method());
+        assert_eq!("https://sts.eu-west-1.amazonaws.com/", request.uri());
+        assert_eq!(
+            Some(&HeaderValue::from_static(
+                "application/x-www-form-urlencoded"
+            )),
+            request.headers().get(CONTENT_TYPE)
+        );
         assert_eq!(credentials.access_key_id(), "access_key_id");
         assert_eq!(credentials.secret_access_key(), "secret_access_key");
         assert_eq!(credentials.session_token(), "session_token");
