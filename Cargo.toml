@@ -1,6 +1,6 @@
 [package]
 name = "aws-mfa"
-version = "0.3.2"
+version = "0.3.3"
 edition = "2021"
 authors = ["Jean Mainguy"]
 categories = ["command-line-utilities"]
@@ -23,13 +23,13 @@ doc = false
 
 [dependencies]
 anyhow = "1.0.71"
-aws-config = "0.55.1"
-aws-sdk-sts = "0.26.0"
-clap = { version = "4.2.5", features = ["derive", "env"] }
-tokio = { version = "1.28.0", features = ["full"] }
+aws-config = "0.55.3"
+aws-sdk-sts = "0.28.0"
+clap = { version = "4.3.0", features = ["derive", "env"] }
+tokio = { version = "1.28.1", features = ["full"] }
 
 [dev-dependencies]
-aws-smithy-client = { version = "0.55.2", features = ["test-util"]}
-aws-smithy-http = "0.55.2"
-aws-credential-types = "0.55.1"
+aws-smithy-client = { version = "0.55.3", features = ["test-util"]}
+aws-smithy-http = "0.55.3"
+aws-credential-types = "0.55.3"
 http = "0.2.9"
