@@ -29,7 +29,7 @@ clap = { version = "4.3.11", features = ["derive", "env"] }
 tokio = { version = "1.29.1", features = ["full"] }
 
 [dev-dependencies]
-aws-smithy-client = { version = "0.55.3", features = ["test-util"]}
+aws-smithy-client = { version = "0.56.0", features = ["test-util"]}
 aws-smithy-http = "0.55.3"
 aws-credential-types = "0.55.3"
 http = "0.2.9"
