@@ -25,7 +25,7 @@ doc = false
 anyhow = "1.0.71"
 aws-config = "0.55.3"
 aws-sdk-sts = "0.28.0"
-clap = { version = "4.3.11", features = ["derive", "env"] }
+clap = { version = "4.3.23", features = ["derive", "env"] }
 tokio = { version = "1.29.1", features = ["full"] }
 
 [dev-dependencies]
