@@ -9,23 +9,19 @@
 Authenticate to AWS with MFA 🔐
 
 ```shell
-➜ aws-mfa -h
+➜ aws-mfa
 Authenticate to AWS with MFA 🔐
 
-Usage: aws-mfa [OPTIONS] --code <CODE> <HOME>
+Usage: aws-mfa <COMMAND>
 
-Arguments:
-  <HOME>  Home directory containing the AWS hidden folder [env: HOME=/Users/JohnDoe]
+Commands:
+  file  Authenticate to AWS with MFA using config and credentials files
+  env   Authenticate to AWS with MFA using environment variables
+  help  Print this message or the help of the given subcommand(s)
 
 Options:
-  -r, --region <REGION>          Name of the AWS region [default: eu-west-1]
-  -p, --profile <PROFILE>        Name of the AWS profile [default: default]
-  -s, --suffix <SUFFIX>          Suffix of the original AWS profile [default: noauth]
-  -c, --code <CODE>              MFA code
-  -d, --duration <DURATION>      Session duration in seconds [default: 3600]
-  -i, --identifier <IDENTIFIER>  MFA device identifier (defaults to AWS username) [default: ]
-  -h, --help                     Print help
-  -V, --version                  Print version
+  -h, --help     Print help
+  -V, --version  Print version
 ```
 
 ## Installation
@@ -46,6 +42,14 @@ or downloaded as binary from the [releases page](https://github.com/jhandguy/aws
 
 ## Usage
 
+### Config and credentials files
+
+Add default region in `~/.aws/config`:
+```text
+[<profile_name>]
+region = <aws_region>
+```
+
 Add basic credentials in `~/.aws/credentials`:
 
 ```text
@@ -56,15 +60,46 @@ aws_secret_access_key = <aws_secret_access_key>
 
 > **Note**: make sure to add the `-noauth` suffix to the profile name
 
-Run `aws-mfa`:
+Run the `aws-mfa file` command:
 ```shell
-aws-mfa -p <profile_name> -c <mfa_code>
+aws-mfa file -p <profile_name> -c <mfa_code>
 ```
 
 Check generated credentials in `~/.aws/credentials`:
+```shell
+cat ~/.aws/credentials
+```
 ```text
 [<profile_name>]
 aws_access_key_id = <aws_access_key_id>
 aws_secret_access_key = <aws_secret_access_key>
 aws_session_token = <aws_session_token>
+aws_session_expiration_timestamp = <aws_session_expiration_timestamp>
+```
+
+### Environment variables
+
+Export default region and basic credentials as environment variables:
+
+```shell
+export AWS_REGION=<aws_region>
+export AWS_ACCESS_KEY_ID=<aws_access_key_id>
+export AWS_SECRET_ACCESS_KEY=<aws_secret_access_key>
+```
+
+Eval the `aws-mfa env` command:
+```shell
+eval $(aws-mfa env -c <mfa_code>)
+```
+
+Check exported environment variables:
+```shell
+env | grep AWS_
+```
+```text
+AWS_REGION=<aws_region>
+AWS_ACCESS_KEY_ID=<aws_access_key_id>
+AWS_SECRET_ACCESS_KEY=<aws_secret_access_key>
+AWS_SESSION_TOKEN=<aws_session_token>
+AWS_SESSION_EXPIRATION_TIMESTAMP=<aws_session_expiration_timestamp>
 ```
