@@ -1,40 +1,46 @@
 use anyhow::{anyhow, Result};
-use aws_config::load_from_env;
-use aws_config::profile::ProfileFileCredentialsProvider;
-use aws_sdk_sts::config::{Builder, Region};
+use aws_config::SdkConfig;
+use aws_credential_types::provider::ProvideCredentials;
+use aws_sdk_sts::config::Builder;
 use aws_sdk_sts::Client;
 
-use crate::auth::Credentials;
+use crate::error::Error;
+use crate::error::Error::{
+    GetCallerIdentityError, GetSessionTokenError, InvalidCredentials, InvalidIdentity,
+    InvalidSession, Other,
+};
+use crate::Credentials;
 
-pub async fn get_client(profile: &str, suffix: &str, region: &str) -> Client {
-    let sdk_config = load_from_env().await;
-    let provider = ProfileFileCredentialsProvider::builder()
-        .profile_name(format!("{profile}-{suffix}"))
-        .build();
-    let config = Builder::from(&sdk_config)
-        .region(Region::new(String::from(region)))
-        .credentials_provider(provider)
-        .build();
+pub fn get_client(config: &SdkConfig, provider: impl ProvideCredentials + 'static) -> Client {
+    let builder = Builder::from(config).credentials_provider(provider);
 
-    Client::from_conf(config)
+    Client::from_conf(builder.build())
 }
 
-pub async fn get_mfa_device_arn(client: &Client, identifier: &str) -> Result<String> {
-    let identity = client.get_caller_identity().send().await?;
+pub async fn get_mfa_device_arn(
+    client: &Client,
+    identifier: Option<String>,
+) -> Result<String, Error> {
+    let identity = client
+        .get_caller_identity()
+        .send()
+        .await
+        .map_err(GetCallerIdentityError)?;
 
     let account = identity
         .account()
-        .ok_or_else(|| anyhow!("account identity missing"))?;
-    let user = identity
+        .ok_or_else(|| InvalidIdentity(String::from("account")))?;
+    let arn = identity
         .arn()
-        .ok_or_else(|| anyhow!("account arn missing"))?
+        .ok_or_else(|| InvalidIdentity(String::from("arn")))?;
+    let user = arn
         .split('/')
         .last()
-        .ok_or_else(|| anyhow!("cannot parse arn"))?;
+        .ok_or_else(|| Other(anyhow!("could not extract user in arn `{}`", arn)))?;
 
     let identifier = match identifier {
-        "" => user,
-        _ => identifier,
+        Some(i) => i,
+        None => String::from(user),
     };
 
     let arn = format!("arn:aws:iam::{account}:mfa/{identifier}");
@@ -47,32 +53,37 @@ pub async fn get_auth_credentials(
     arn: &str,
     code: &str,
     duration: i32,
-) -> Result<Credentials> {
+) -> Result<Credentials, Error> {
     let session = client
         .get_session_token()
         .serial_number(arn)
         .token_code(code)
         .duration_seconds(duration)
         .send()
-        .await?;
+        .await
+        .map_err(GetSessionTokenError)?;
 
     let credentials = session
         .credentials()
-        .ok_or_else(|| anyhow!("credentials field missing"))?;
+        .ok_or_else(|| InvalidSession(String::from("credentials")))?;
     let access_key_id = credentials
         .access_key_id()
-        .ok_or_else(|| anyhow!("access_key_id field missing"))?;
+        .ok_or_else(|| InvalidCredentials(String::from("access_key_id")))?;
     let secret_access_key = credentials
         .secret_access_key()
-        .ok_or_else(|| anyhow!("secret_access_key field missing"))?;
+        .ok_or_else(|| InvalidCredentials(String::from("secret_access_key")))?;
     let session_token = credentials
         .session_token()
-        .ok_or_else(|| anyhow!("session_token field missing"))?;
+        .ok_or_else(|| InvalidCredentials(String::from("session_token")))?;
+    let expiration = credentials
+        .expiration()
+        .ok_or_else(|| InvalidCredentials(String::from("expiration")))?;
 
     Ok(Credentials::new(
         access_key_id,
         secret_access_key,
         session_token,
+        expiration.secs(),
     ))
 }
 
@@ -84,6 +95,8 @@ mod tests {
     use aws_sdk_sts::{Client, Config};
     use aws_smithy_client::test_connection::capture_request;
     use aws_smithy_http::body::SdkBody;
+    use aws_smithy_types::date_time::Format;
+    use aws_smithy_types::DateTime;
     use http::header::CONTENT_TYPE;
     use http::{HeaderValue, Method, Response};
 
@@ -109,7 +122,7 @@ mod tests {
             .http_connector(conn)
             .build();
         let client = Client::from_conf(conf);
-        let arn = get_mfa_device_arn(&client, "").await?;
+        let arn = get_mfa_device_arn(&client, None).await?;
 
         let request = request.expect_request();
         assert_eq!(Method::POST, request.method());
@@ -145,7 +158,7 @@ mod tests {
             .http_connector(conn)
             .build();
         let client = Client::from_conf(conf);
-        let arn = get_mfa_device_arn(&client, "device_id").await?;
+        let arn = get_mfa_device_arn(&client, Some(String::from("device_id"))).await?;
 
         let request = request.expect_request();
         assert_eq!(Method::POST, request.method());
@@ -198,6 +211,10 @@ mod tests {
         assert_eq!(credentials.access_key_id(), "access_key_id");
         assert_eq!(credentials.secret_access_key(), "secret_access_key");
         assert_eq!(credentials.session_token(), "session_token");
+        assert_eq!(
+            credentials.session_expiration_timestamp(),
+            DateTime::from_str("2022-08-31T19:55:58Z", Format::DateTime)?.secs()
+        );
 
         Ok(())
     }
