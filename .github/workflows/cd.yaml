@@ -23,15 +23,19 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
+            command: cargo
 
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-latest
+            command: cross
 
           - target: x86_64-apple-darwin
             os: macos-11
+            command: cargo
 
           - target: aarch64-apple-darwin
             os: macos-latest
+            command: cargo
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -39,19 +43,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
-          profile: minimal
-          toolchain: stable
-          override: true
           target: ${{ matrix.target }}
 
-      - name: Build release binary
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --locked --target ${{ matrix.target }}
-          use-cross: ${{ matrix.os == 'ubuntu-latest' }}
+      - name: Install cross
+        run: cargo install cross
+        if: matrix.command == 'cross'
+
+      - name: Run ${{ matrix.command }} build
+        run: ${{ matrix.command }} build --release --locked --target ${{ matrix.target }}
 
       - name: Upload artifact
         run: |
@@ -72,11 +73,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
-          profile: minimal
-          toolchain: stable
-          override: true
+          components: rustfmt, clippy
 
       - name: Publish crate
         run: cargo publish --token ${{ secrets.CARGO_TOKEN }}
