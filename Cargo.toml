@@ -21,6 +21,13 @@ name = "aws-mfa"
 test = false
 doc = false
 
+[profile.release]
+strip = true
+lto = true
+opt-level = "z"
+codegen-units = 1
+panic = "abort"
+
 [dependencies]
 anyhow = "1.0.75"
 async-trait = "0.1.73"
