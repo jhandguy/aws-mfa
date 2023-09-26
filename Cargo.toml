@@ -35,7 +35,7 @@ aws-config = "0.56.1"
 aws-credential-types = "0.56.1"
 aws-sdk-sts = "0.31.1"
 aws-smithy-http = "0.56.1"
-clap = { version = "4.4.4", features = ["derive", "env"] }
+clap = { version = "4.4.5", features = ["derive", "env"] }
 http = "0.2.9"
 thiserror = "1.0.48"
 time = "0.3.28"
