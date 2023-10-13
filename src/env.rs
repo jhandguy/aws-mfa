@@ -5,15 +5,14 @@ use crate::error::Error::{
 use crate::Credentials;
 use aws_config::environment::EnvironmentVariableCredentialsProvider;
 use aws_credential_types::provider::ProvideCredentials;
-use std::env;
-use std::env::VarError;
+use std::env::{var, VarError};
 
 const AWS_SESSION_EXPIRATION_TIMESTAMP: &str = "AWS_SESSION_EXPIRATION_TIMESTAMP";
 
 pub async fn get_env_credentials(
     provider: EnvironmentVariableCredentialsProvider,
 ) -> Result<Option<Credentials>, Error> {
-    return match env::var(AWS_SESSION_EXPIRATION_TIMESTAMP) {
+    return match var(AWS_SESSION_EXPIRATION_TIMESTAMP) {
         Ok(var) => match var.parse::<i64>() {
             Ok(session_expiration_timestamp) => {
                 let credentials = provider
