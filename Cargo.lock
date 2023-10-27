@@ -179,7 +179,7 @@ dependencies = [
  "async-trait",
  "aws-config",
  "aws-credential-types",
- "aws-sdk-sts 0.33.0",
+ "aws-sdk-sts 0.34.0",
  "aws-smithy-client",
  "aws-smithy-http",
  "aws-smithy-types",
@@ -261,9 +261,9 @@ dependencies = [
 
 [[package]]
 name = "aws-sdk-sts"
-version = "0.33.0"
+version = "0.34.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ac0cd8dff18d591b30def42d036312bf1115c937b714e7f04784d4e90c437fcd"
+checksum = "100bf47fca9d6d0aca42ad06a6d28826039a25baadf993b6aa51de6161d36e18"
 dependencies = [
  "aws-credential-types",
  "aws-http",
