@@ -8,3 +8,13 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      aws:
+        patterns:
+          - "aws*"
+        exclude-patterns:
+          - "aws-sdk-sts"
+      patch-minor:
+        update-types:
+          - "patch"
+          - "minor"
