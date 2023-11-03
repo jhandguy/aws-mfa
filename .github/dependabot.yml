@@ -12,9 +12,9 @@ updates:
       aws:
         patterns:
           - "aws*"
-        exclude-patterns:
-          - "aws-sdk-sts"
       patch-minor:
         update-types:
           - "patch"
           - "minor"
+        exclude-patterns:
+          - "aws*"
