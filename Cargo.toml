@@ -31,10 +31,10 @@ panic = "abort"
 [dependencies]
 anyhow = "1.0.75"
 async-trait = "0.1.74"
-aws-config = "0.56.1"
-aws-credential-types = "0.56.1"
-aws-sdk-sts = "0.34.0"
-aws-smithy-http = "0.56.1"
+aws-config = "0.100.0"
+aws-credential-types = "0.58.0"
+aws-sdk-sts = "0.37.0"
+aws-smithy-http = "0.58.0"
 clap = { version = "4.4.8", features = ["derive", "env"] }
 http = "0.2.10"
 thiserror = "1.0.50"
@@ -43,4 +43,4 @@ tokio = { version = "1.34.0", features = ["full"] }
 
 [dev-dependencies]
 aws-smithy-client = { version = "0.56.1", features = ["test-util"]}
-aws-smithy-types = "0.56.1"
+aws-smithy-types = "0.100.0"
