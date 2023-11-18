@@ -46,8 +46,11 @@ or downloaded as binary from the [releases page](https://github.com/jhandguy/aws
 
 Add default region in `~/.aws/config`:
 ```text
-[<profile_name>]
+[<profile_name>-noauth]
 region = <aws_region>
+
+[<profile_name>]
+source_profile = <profile_name>-noauth
 ```
 
 Add basic credentials in `~/.aws/credentials`:

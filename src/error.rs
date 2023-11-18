@@ -1,9 +1,8 @@
 use aws_credential_types::provider::error::CredentialsError;
 use aws_sdk_sts::operation::get_caller_identity::GetCallerIdentityError;
 use aws_sdk_sts::operation::get_session_token::GetSessionTokenError;
-use aws_smithy_http::body::SdkBody;
-use aws_smithy_http::result::SdkError;
-use http::Response;
+use aws_smithy_runtime_api::client::orchestrator::HttpResponse;
+use aws_smithy_runtime_api::client::result::SdkError;
 use std::env::VarError;
 use std::io;
 use std::num::ParseIntError;
@@ -13,10 +12,10 @@ use time::error::ComponentRange;
 #[derive(Error, Debug)]
 pub enum Error {
     #[error("failed to get caller identity")]
-    GetCallerIdentityError(#[source] SdkError<GetCallerIdentityError, Response<SdkBody>>),
+    GetCallerIdentityError(#[source] SdkError<GetCallerIdentityError, HttpResponse>),
 
     #[error("failed to get session token")]
-    GetSessionTokenError(#[source] SdkError<GetSessionTokenError, Response<SdkBody>>),
+    GetSessionTokenError(#[source] SdkError<GetSessionTokenError, HttpResponse>),
 
     #[error("failed to provide credentials")]
     ProvideCredentialsError(#[source] CredentialsError),
