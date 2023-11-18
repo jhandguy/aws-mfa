@@ -13,13 +13,20 @@ pub fn get_credentials_file(home: &str) -> String {
     format!("{home}/.aws/credentials")
 }
 
-pub async fn get_file_config(home: &str, region: Option<String>, profile: &str) -> SdkConfig {
+pub async fn get_file_config(
+    home: &str,
+    region: Option<String>,
+    profile: &str,
+    suffix: &str,
+) -> SdkConfig {
     let files = ProfileFiles::builder()
         .with_file(Config, get_config_file(home))
         .with_file(Credentials, get_credentials_file(home))
         .build();
 
-    let mut config = from_env().profile_files(files).profile_name(profile);
+    let mut config = from_env()
+        .profile_files(files)
+        .profile_name(format!("{profile}-{suffix}"));
 
     if let Some(region) = region {
         config = config.region(Region::new(region));

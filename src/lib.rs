@@ -134,7 +134,8 @@ impl CredentialsProvider for FileCredentialsProvider {
 
     /// Authenticate using [`aws_config::profile::ProfileFileCredentialsProvider`] and return new [`Credentials`]
     async fn authenticate(&self) -> Result<Credentials, Error> {
-        let config = get_file_config(&self.home, self.region.clone(), &self.profile).await;
+        let config =
+            get_file_config(&self.home, self.region.clone(), &self.profile, &self.suffix).await;
         let provider = get_file_provider(&self.profile, &self.suffix);
         let client = get_client(&config, provider);
         let arn = get_mfa_device_arn(&client, self.identifier.clone()).await?;
