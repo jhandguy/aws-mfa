@@ -109,6 +109,7 @@ mod tests {
         ))?;
         let replay_client = StaticReplayClient::new(vec![ReplayEvent::new(request, response)]);
         let conf = Config::builder()
+            .behavior_version_latest()
             .region(Region::new("eu-west-1"))
             .credentials_provider(credentials)
             .http_client(replay_client.clone())
@@ -141,6 +142,7 @@ mod tests {
         ))?;
         let replay_client = StaticReplayClient::new(vec![ReplayEvent::new(request, response)]);
         let conf = Config::builder()
+            .behavior_version_latest()
             .region(Region::new("eu-west-1"))
             .credentials_provider(credentials)
             .http_client(replay_client.clone())
@@ -179,6 +181,7 @@ mod tests {
         ))?;
         let replay_client = StaticReplayClient::new(vec![ReplayEvent::new(request, response)]);
         let conf = Config::builder()
+            .behavior_version_latest()
             .region(Region::new("eu-west-1"))
             .credentials_provider(credentials)
             .http_client(replay_client.clone())
