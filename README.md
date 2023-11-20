@@ -50,7 +50,7 @@ Add default region in `~/.aws/config`:
 region = <aws_region>
 
 [<profile_name>]
-source_profile = <profile_name>-noauth
+region = <aws_region>
 ```
 
 Add basic credentials in `~/.aws/credentials`:
