@@ -42,5 +42,5 @@ time = "0.3.30"
 tokio = { version = "1.34.0", features = ["full"] }
 
 [dev-dependencies]
-aws-smithy-runtime = { version = "0.101.0", features = ["test-util"]}
+aws-smithy-runtime = { version = "1.0.1", features = ["test-util"]}
 aws-smithy-types = "0.101.0"
