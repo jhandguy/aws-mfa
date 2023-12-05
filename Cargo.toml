@@ -35,7 +35,7 @@ aws-config = { version = "1.0.1", features = ["behavior-version-latest"] }
 aws-credential-types = "1.0.1"
 aws-sdk-sts = "1.1.0"
 aws-smithy-runtime-api = "1.0.1"
-clap = { version = "4.4.8", features = ["derive", "env"] }
+clap = { version = "4.4.11", features = ["derive", "env"] }
 http = "0.2.11"
 thiserror = "1.0.50"
 time = "0.3.30"
