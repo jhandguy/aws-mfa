@@ -253,9 +253,9 @@ dependencies = [
 
 [[package]]
 name = "aws-sdk-sts"
-version = "1.4.0"
+version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bbee86e8d9b1be709bd0f38b9ab3f196e39b0b6f3262a0a919a9d30f25debd94"
+checksum = "f45778089751d5aa8645a02dd60865fa0eea39f00be5db2c7779bc50b83db19a"
 dependencies = [
  "aws-credential-types",
  "aws-http",
@@ -299,9 +299,9 @@ dependencies = [
 
 [[package]]
 name = "aws-smithy-async"
-version = "1.0.3"
+version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "573441a5a0219e436e86a7f9a20b0f2505c5ae6fe7fe3eba6e3950991c9ad914"
+checksum = "1e9f65000917e3aa94c259d67fe01fa9e4cd456187d026067d642436e6311a81"
 dependencies = [
  "futures-util",
  "pin-project-lite",
@@ -310,9 +310,9 @@ dependencies = [
 
 [[package]]
 name = "aws-smithy-http"
-version = "0.60.0"
+version = "0.60.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5b1de8aee22f67de467b2e3d0dd0fb30859dc53f579a63bd5381766b987db644"
+checksum = "e4e816425a6b9caea4929ac97d0cb33674849bd5f0086418abc0d02c63f7a1bf"
 dependencies = [
  "aws-smithy-runtime-api",
  "aws-smithy-types",
@@ -339,15 +339,15 @@ dependencies = [
 
 [[package]]
 name = "aws-smithy-protocol-test"
-version = "0.60.0"
+version = "0.60.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3ad76ca454230a5540a47e44ba903a910ae09f2c39a86cd249f2f8c87da83eb"
+checksum = "aecec08d0fcded5316998e312154854b6ae2cc81bc6e4f022ea8a099177bf839"
 dependencies = [
  "assert-json-diff",
  "aws-smithy-runtime-api",
  "http",
  "pretty_assertions",
- "regex",
+ "regex-lite",
  "roxmltree",
  "serde_json",
  "thiserror",
@@ -365,9 +365,9 @@ dependencies = [
 
 [[package]]
 name = "aws-smithy-runtime"
-version = "1.0.3"
+version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c0c628feae802ab1589936e2aaef6f8ab2b8fc1ee1f947c276dd8a7c3cda1904"
+checksum = "8da5b0a3617390e769576321816112f711c13d7e1114685e022505cf51fe5e48"
 dependencies = [
  "aws-smithy-async",
  "aws-smithy-http",
@@ -394,9 +394,9 @@ dependencies = [
 
 [[package]]
 name = "aws-smithy-runtime-api"
-version = "1.0.3"
+version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7460e5cc8e6eb0749608535854352f6e121433960ba05daf4dbde0e42c1199a5"
+checksum = "2404c9eb08bfe9af255945254d9afc69a367b7ee008b8db75c05e3bca485fc65"
 dependencies = [
  "aws-smithy-async",
  "aws-smithy-types",
@@ -410,9 +410,9 @@ dependencies = [
 
 [[package]]
 name = "aws-smithy-types"
-version = "1.0.3"
+version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ba838f43d0d72d76918895a93c3ad647f75a058541a60e85beefb6bb0a9bd40"
+checksum = "2aba8136605d14ac88f57dc3a693a9f8a4eab4a3f52bc03ff13746f0cd704e97"
 dependencies = [
  "base64-simd",
  "bytes",
@@ -1148,6 +1148,12 @@ dependencies = [
  "memchr",
  "regex-syntax",
 ]
+
+[[package]]
+name = "regex-lite"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "30b661b2f27137bdbc16f00eda72866a92bb28af1753ffbd56744fb6e2e9cd8e"
 
 [[package]]
 name = "regex-syntax"
