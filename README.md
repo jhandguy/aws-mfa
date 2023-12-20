@@ -46,10 +46,10 @@ or downloaded as binary from the [releases page](https://github.com/jhandguy/aws
 
 Add default region in `~/.aws/config`:
 ```text
-[<profile_name>-noauth]
+[profile <profile_name>-noauth]
 region = <aws_region>
 
-[<profile_name>]
+[profile <profile_name>]
 region = <aws_region>
 ```
 
