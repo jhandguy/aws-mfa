@@ -37,8 +37,8 @@ aws-sdk-sts = "1.7.0"
 aws-smithy-runtime-api = "1.1.1"
 clap = { version = "4.4.11", features = ["derive", "env"] }
 thiserror = "1.0.51"
-time = "0.3.30"
-tokio = { version = "1.35.0", features = ["full"] }
+time = "0.3.31"
+tokio = { version = "1.35.1", features = ["full"] }
 
 [dev-dependencies]
 aws-smithy-runtime = { version = "1.1.1", features = ["test-util"]}
