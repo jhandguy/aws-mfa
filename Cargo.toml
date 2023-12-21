@@ -29,8 +29,8 @@ codegen-units = 1
 panic = "abort"
 
 [dependencies]
-anyhow = "1.0.75"
-async-trait = "0.1.74"
+anyhow = "1.0.76"
+async-trait = "0.1.75"
 aws-config = { version = "1.1.1", features = ["behavior-version-latest"] }
 aws-credential-types = "1.1.1"
 aws-sdk-sts = "1.7.0"
