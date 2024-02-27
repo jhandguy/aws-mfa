@@ -154,7 +154,7 @@ dependencies = [
  "aws-smithy-runtime-api",
  "aws-smithy-types",
  "clap",
- "http 0.2.11",
+ "http 1.0.0",
  "thiserror",
  "time",
  "tokio",
