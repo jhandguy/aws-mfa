@@ -31,7 +31,7 @@ panic = "abort"
 [dependencies]
 anyhow = "1.0.81"
 async-trait = "0.1.78"
-aws-config = { version = "1.1.8", features = ["behavior-version-latest"] }
+aws-config = { version = "1.1.10", features = ["behavior-version-latest"] }
 aws-credential-types = "1.1.8"
 aws-sdk-sts = "1.17.0"
 aws-smithy-runtime-api = "1.2.0"
