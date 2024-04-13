@@ -29,16 +29,16 @@ codegen-units = 1
 panic = "abort"
 
 [dependencies]
-anyhow = "1.0.81"
-async-trait = "0.1.78"
+anyhow = "1.0.82"
+async-trait = "0.1.80"
 aws-config = { version = "1.1.8", features = ["behavior-version-latest"] }
 aws-credential-types = "1.1.8"
 aws-sdk-sts = "1.17.0"
 aws-smithy-runtime-api = "1.2.0"
-clap = { version = "4.5.3", features = ["derive", "env"] }
+clap = { version = "4.5.4", features = ["derive", "env"] }
 thiserror = "1.0.58"
-time = "0.3.34"
-tokio = { version = "1.36.0", features = ["full"] }
+time = "0.3.36"
+tokio = { version = "1.37.0", features = ["full"] }
 
 [dev-dependencies]
 aws-smithy-runtime = { version = "1.1.8", features = ["test-util"]}
