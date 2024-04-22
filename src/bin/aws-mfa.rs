@@ -146,8 +146,8 @@ impl Authenticate for EnvArgs {
             "export AWS_ACCESS_KEY_ID=\"{}\"
 export AWS_SECRET_ACCESS_KEY=\"{}\"
 export AWS_SESSION_TOKEN=\"{}\"
-export AWS_SESSION_EXPIRATION_TIMESTAMP=\"{}\" &&\
-echo \"Authentication successful!\" &&\
+export AWS_SESSION_EXPIRATION_TIMESTAMP=\"{}\" && \
+echo \"Authentication successful!\" && \
 echo \"New credentials will expire in {}.\"",
             credentials.access_key_id(),
             credentials.secret_access_key(),
