@@ -39,7 +39,7 @@ aws-smithy-runtime-api = "1.6.1"
 clap = { version = "4.5.4", features = ["derive", "env"] }
 thiserror = "1.0.61"
 time = "0.3.36"
-tokio = { version = "1.37.0", features = ["full"] }
+tokio = { version = "1.38.0", features = ["full"] }
 
 [dev-dependencies]
 aws-smithy-runtime = { version = "1.5.4", features = ["test-util"]}
