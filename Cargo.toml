@@ -35,13 +35,13 @@ aws-config = { version = "1.5.0", features = ["behavior-version-latest"] }
 aws-credential-types = "1.2.0"
 aws-runtime = "1.2.2"
 aws-sdk-sts = "1.28.0"
-aws-smithy-runtime-api = "1.6.1"
+aws-smithy-runtime-api = "1.6.2"
 clap = { version = "4.5.4", features = ["derive", "env"] }
 thiserror = "1.0.61"
 time = "0.3.36"
 tokio = { version = "1.38.0", features = ["full"] }
 
 [dev-dependencies]
-aws-smithy-runtime = { version = "1.5.4", features = ["test-util"]}
+aws-smithy-runtime = { version = "1.5.5", features = ["test-util"]}
 aws-smithy-types = "1.1.10"
 http = "1.1.0"
