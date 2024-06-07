@@ -36,7 +36,7 @@ aws-credential-types = "1.2.0"
 aws-runtime = "1.2.2"
 aws-sdk-sts = "1.28.0"
 aws-smithy-runtime-api = "1.6.1"
-clap = { version = "4.5.4", features = ["derive", "env"] }
+clap = { version = "4.5.6", features = ["derive", "env"] }
 thiserror = "1.0.61"
 time = "0.3.36"
 tokio = { version = "1.38.0", features = ["full"] }
