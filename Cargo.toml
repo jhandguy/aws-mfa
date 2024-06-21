@@ -33,8 +33,8 @@ anyhow = "1.0.86"
 async-trait = "0.1.80"
 aws-config = { version = "1.5.1", features = ["behavior-version-latest"] }
 aws-credential-types = "1.2.0"
-aws-runtime = "1.2.3"
-aws-sdk-sts = "1.31.0"
+aws-runtime = "1.3.0"
+aws-sdk-sts = "1.32.0"
 aws-smithy-runtime-api = "1.7.0"
 clap = { version = "4.5.7", features = ["derive", "env"] }
 thiserror = "1.0.61"
