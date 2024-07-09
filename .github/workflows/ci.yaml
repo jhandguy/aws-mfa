@@ -48,7 +48,7 @@ jobs:
             command: cross
 
           - target: x86_64-apple-darwin
-            os: macos-11
+            os: macos-latest
             command: cargo
 
           - target: aarch64-apple-darwin
