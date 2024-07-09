@@ -154,7 +154,7 @@ dependencies = [
 
 [[package]]
 name = "aws-mfa"
-version = "1.0.15"
+version = "1.0.16"
 dependencies = [
  "anyhow",
  "async-trait",
