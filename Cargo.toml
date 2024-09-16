@@ -29,7 +29,7 @@ codegen-units = 1
 panic = "abort"
 
 [dependencies]
-anyhow = "=1.0.87"
+anyhow = "=1.0.89"
 async-trait = "=0.1.82"
 aws-config = { version = "=1.5.5", features = ["behavior-version-latest"] }
 aws-credential-types = "=1.2.1"
