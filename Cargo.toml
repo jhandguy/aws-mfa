@@ -34,7 +34,7 @@ async-trait = "=0.1.83"
 aws-config = { version = "=1.5.7", features = ["behavior-version-latest"] }
 aws-credential-types = "=1.2.1"
 aws-runtime = "=1.4.3"
-aws-sdk-sts = "=1.44.0"
+aws-sdk-sts = "=1.45.0"
 aws-smithy-runtime-api = "=1.7.2"
 clap = { version = "=4.5.19", features = ["derive", "env"] }
 thiserror = "=1.0.64"
@@ -42,6 +42,6 @@ time = "=0.3.36"
 tokio = { version = "=1.40.0", features = ["full"] }
 
 [dev-dependencies]
-aws-smithy-runtime = { version = "=1.7.1", features = ["test-util"]}
+aws-smithy-runtime = { version = "=1.7.2", features = ["test-util"]}
 aws-smithy-types = "=1.2.7"
 http = "=1.1.0"
