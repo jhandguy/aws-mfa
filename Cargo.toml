@@ -31,10 +31,10 @@ panic = "abort"
 [dependencies]
 anyhow = "=1.0.89"
 async-trait = "=0.1.83"
-aws-config = { version = "=1.5.7", features = ["behavior-version-latest"] }
+aws-config = { version = "=1.5.8", features = ["behavior-version-latest"] }
 aws-credential-types = "=1.2.1"
 aws-runtime = "=1.4.3"
-aws-sdk-sts = "=1.45.0"
+aws-sdk-sts = "=1.46.0"
 aws-smithy-runtime-api = "=1.7.2"
 clap = { version = "=4.5.20", features = ["derive", "env"] }
 thiserror = "=1.0.64"
