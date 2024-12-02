@@ -12,7 +12,7 @@ const AWS_SESSION_EXPIRATION_TIMESTAMP: &str = "AWS_SESSION_EXPIRATION_TIMESTAMP
 pub async fn get_env_credentials(
     provider: EnvironmentVariableCredentialsProvider,
 ) -> Result<Option<Credentials>, Error> {
-    return match var(AWS_SESSION_EXPIRATION_TIMESTAMP) {
+    match var(AWS_SESSION_EXPIRATION_TIMESTAMP) {
         Ok(var) => match var.parse::<i64>() {
             Ok(session_expiration_timestamp) => {
                 let credentials = provider
@@ -37,5 +37,5 @@ pub async fn get_env_credentials(
             var: String::from(AWS_SESSION_EXPIRATION_TIMESTAMP),
             source: e,
         }),
-    };
+    }
 }
