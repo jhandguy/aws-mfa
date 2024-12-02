@@ -37,7 +37,7 @@ aws-runtime = "1"
 aws-sdk-sts = "1"
 aws-smithy-runtime-api = "1"
 clap = { version = "4", features = ["derive", "env"] }
-thiserror = "1"
+thiserror = "2"
 time = "0"
 tokio = { version = "1", features = ["full"] }
 
