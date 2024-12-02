@@ -63,12 +63,12 @@ fn find_credentials(file_content: &str, profile: &str) -> Option<Credentials> {
 }
 
 fn replace_credentials(file_content: &str, profile: &str, content: &str) -> String {
-    return file_content
+    file_content
         .split("\n\n")
         .filter(|l| !l.is_empty() && !l.contains(format!("[{profile}]").as_str()))
         .collect::<Vec<&str>>()
         .join("\n\n")
-        .add(content);
+        .add(content)
 }
 
 pub fn find_auth_credentials(home: &str, profile: &str) -> Result<Option<Credentials>, Error> {
