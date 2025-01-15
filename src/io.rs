@@ -22,28 +22,13 @@ fn find_credential_value(credentials: &str, key: &str) -> Option<String> {
 }
 
 fn find_credentials(file_content: &str, profile: &str) -> Option<Credentials> {
-    let credentials = match file_content
+    let credentials = file_content
         .split("\n\n")
-        .find(|l| l.contains(format!("[{profile}]").as_str()))
-    {
-        Some(c) => c,
-        None => return None,
-    };
+        .find(|l| l.contains(format!("[{profile}]").as_str()))?;
 
-    let access_key_id = match find_credential_value(credentials, AWS_ACCESS_KEY_ID) {
-        Some(i) => i,
-        None => return None,
-    };
-
-    let secret_access_key = match find_credential_value(credentials, AWS_SECRET_ACCESS_KEY) {
-        Some(k) => k,
-        None => return None,
-    };
-
-    let session_token = match find_credential_value(credentials, AWS_SESSION_TOKEN) {
-        Some(t) => t,
-        None => return None,
-    };
+    let access_key_id = find_credential_value(credentials, AWS_ACCESS_KEY_ID)?;
+    let secret_access_key = find_credential_value(credentials, AWS_SECRET_ACCESS_KEY)?;
+    let session_token = find_credential_value(credentials, AWS_SESSION_TOKEN)?;
 
     let session_expiration_timestamp =
         match find_credential_value(credentials, AWS_SESSION_EXPIRATION_TIMESTAMP) {
