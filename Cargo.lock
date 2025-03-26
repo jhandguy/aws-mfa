@@ -137,7 +137,7 @@ dependencies = [
  "bytes",
  "fastrand",
  "hex",
- "http 1.2.0",
+ "http 1.3.1",
  "ring",
  "time",
  "tokio",
@@ -339,7 +339,7 @@ dependencies = [
  "bytes-utils",
  "futures-core",
  "http 0.2.12",
- "http 1.2.0",
+ "http 1.3.1",
  "http-body 0.4.6",
  "once_cell",
  "percent-encoding",
@@ -361,7 +361,7 @@ dependencies = [
  "bytes",
  "h2 0.4.8",
  "http 0.2.12",
- "http 1.2.0",
+ "http 1.3.1",
  "http-body 0.4.6",
  "http-body 1.0.1",
  "hyper 0.14.32",
@@ -389,6 +389,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92144e45819cae7dc62af23eac5a038a58aa544432d2102609654376a900bd07"
 dependencies = [
  "aws-smithy-types",
+]
+
+[[package]]
+name = "aws-smithy-observability"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "445d065e76bc1ef54963db400319f1dd3ebb3e0a74af20f7f7630625b0cc7cc0"
+dependencies = [
+ "aws-smithy-runtime-api",
+ "once_cell",
 ]
 
 [[package]]
@@ -422,19 +432,20 @@ dependencies = [
 
 [[package]]
 name = "aws-smithy-runtime"
-version = "1.8.0"
+version = "1.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f6328865e36c6fd970094ead6b05efd047d3a80ec5fc3be5e743910da9f2ebf8"
+checksum = "0152749e17ce4d1b47c7747bdfec09dac1ccafdcbc741ebf9daa2a373356730f"
 dependencies = [
  "aws-smithy-async",
  "aws-smithy-http",
  "aws-smithy-http-client",
+ "aws-smithy-observability",
  "aws-smithy-runtime-api",
  "aws-smithy-types",
  "bytes",
  "fastrand",
  "http 0.2.12",
- "http 1.2.0",
+ "http 1.3.1",
  "http-body 0.4.6",
  "http-body 1.0.1",
  "once_cell",
@@ -1015,7 +1026,7 @@ dependencies = [
  "fnv",
  "futures-core",
  "futures-sink",
- "http 1.2.0",
+ "http 1.3.1",
  "indexmap",
  "slab",
  "tokio",
@@ -1171,7 +1182,7 @@ dependencies = [
  "futures-channel",
  "futures-util",
  "h2 0.4.8",
- "http 1.2.0",
+ "http 1.3.1",
  "http-body 1.0.1",
  "httparse",
  "itoa",
@@ -1204,7 +1215,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2d191583f3da1305256f22463b9bb0471acad48a4e534a5218b9963e9c1f59b2"
 dependencies = [
  "futures-util",
- "http 1.2.0",
+ "http 1.3.1",
  "hyper 1.6.0",
  "hyper-util",
  "rustls 0.23.23",
@@ -1224,7 +1235,7 @@ dependencies = [
  "bytes",
  "futures-channel",
  "futures-util",
- "http 1.2.0",
+ "http 1.3.1",
  "http-body 1.0.1",
  "hyper 1.6.0",
  "pin-project-lite",
