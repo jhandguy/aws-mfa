@@ -36,7 +36,7 @@ pub async fn get_mfa_device_arn(
 
     let user = arn
         .split('/')
-        .last()
+        .next_back()
         .ok_or_else(|| Other(anyhow!("could not extract user in arn `{}`", arn)))?;
 
     let identifier = match identifier {
