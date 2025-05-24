@@ -12,10 +12,10 @@ use time::error::ComponentRange;
 #[derive(Error, Debug)]
 pub enum Error {
     #[error("failed to get caller identity")]
-    GetCallerIdentityError(#[source] SdkError<GetCallerIdentityError, HttpResponse>),
+    GetCallerIdentityError(#[source] Box<SdkError<GetCallerIdentityError, HttpResponse>>),
 
     #[error("failed to get session token")]
-    GetSessionTokenError(#[source] SdkError<GetSessionTokenError, HttpResponse>),
+    GetSessionTokenError(#[source] Box<SdkError<GetSessionTokenError, HttpResponse>>),
 
     #[error("failed to provide credentials")]
     ProvideCredentialsError(#[source] CredentialsError),

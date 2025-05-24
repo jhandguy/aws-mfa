@@ -24,7 +24,7 @@ pub async fn get_mfa_device_arn(
         .get_caller_identity()
         .send()
         .await
-        .map_err(GetCallerIdentityError)?;
+        .map_err(|e| GetCallerIdentityError(Box::new(e)))?;
 
     let account = identity
         .account()
@@ -62,7 +62,7 @@ pub async fn get_auth_credentials(
         .duration_seconds(duration)
         .send()
         .await
-        .map_err(GetSessionTokenError)?;
+        .map_err(|e| GetSessionTokenError(Box::new(e)))?;
 
     let credentials = session
         .credentials()
@@ -82,7 +82,7 @@ mod tests {
     use aws_credential_types::Credentials;
     use aws_sdk_sts::config::Region;
     use aws_sdk_sts::{Client, Config};
-    use aws_smithy_runtime::client::http::test_util::{ReplayEvent, StaticReplayClient};
+    use aws_smithy_http_client::test_util::{ReplayEvent, StaticReplayClient};
     use aws_smithy_types::body::SdkBody;
     use aws_smithy_types::date_time::Format;
     use aws_smithy_types::DateTime;
